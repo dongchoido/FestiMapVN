@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FestiMap VN - Vietnam Festival Map & Guide</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.1.1/model-viewer.min.js"></script>
+<script>
+tailwind.config = {
+    darkMode: 'class'
+}
+</script>
+<style>
+body { font-family: sans-serif; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #888; border-radius: 4px; }
+</style>
+</head>
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-300">
+
+<header class="sticky top-0 z-50 bg-white dark:bg-gray-800 shadow-md">
+    <div class="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div class="flex items-center gap-6 w-2/3">
+            <h1 onclick="appRouter('home')" class="text-2xl font-black bg-gradient-to-r from-red-600 to-yellow-500 bg-clip-text text-transparent cursor-pointer hover:scale-105 transition-transform">
+                FestiMap VN
+            </h1>
+            <div class="relative w-full max-w-md hidden sm:block">
+                <input type="text" id="searchInput" placeholder="Search festivals (e.g. Hoi An, Tet)..." class="w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-full px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-red-500">
+                <i class="fas fa-search absolute left-4 top-3 text-gray-400"></i>
+                <div id="searchDropdown" class="hidden absolute top-full left-0 w-full bg-white dark:bg-gray-800 shadow-lg rounded-lg mt-2 overflow-hidden z-50 border border-gray-200 dark:border-gray-700"></div>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <button onclick="toggleTheme()" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                <i id="themeIcon" class="fas fa-moon text-xl text-gray-600 dark:text-gray-300"></i>
+            </button>
+            <button onclick="toggleLang()" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 font-bold text-gray-600 dark:text-gray-300">
+                <span class="lang-en">EN</span>
+                <span class="lang-vi hidden">VI</span>
+            </button>
+        </div>
+    </div>
+</header>
+
+<main class="container mx-auto px-4 py-8">
+    <div id="homeView" class="block space-y-12">
+        <section>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-3xl font-bold">
+                    <span class="lang-en">Featured Festivals</span>
+                    <span class="lang-vi hidden">Lễ Hội Nổi Bật</span>
+                </h2>
+                <div class="flex gap-2">
+                    <button onclick="moveCarousel(-1)" class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700"><i class="fas fa-chevron-left"></i></button>
+                    <button onclick="moveCarousel(1)" class="w-10 h-10 rounded-full bg-white dark:bg-gray-800 shadow flex items-center justify-center hover:bg-gray-100 dark:hover:bg-gray-700"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            <div class="overflow-hidden w-full">
+                <div id="carouselTrack" class="flex transition-transform duration-300 ease-in-out w-full gap-4"></div>
+            </div>
+        </section>
+
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-sm">
+    <div class="h-96 w-full rounded-xl overflow-hidden bg-gray-100 dark:bg-gray-700 relative">
+        
+        <iframe 
+            title="3_ Y phục nữ dân tộc dao đỏ" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            xr-spatial-tracking 
+            execution-while-out-of-viewport 
+            execution-while-not-rendered 
+            web-share 
+            src="https://sketchfab.com/models/316ce05da0ee44998920d8d2efa7b7f6/embed"
+            class="w-full h-full bg-transparent">
+        </iframe>
+
+        <div class="absolute bottom-2 left-2 bg-black/50 text-white px-3 py-1 rounded text-sm backdrop-blur-sm">
+            Interactive 3D Cultural Garment
+        </div>
+    </div>
+    
+    <div class="space-y-6">
+        <h2 class="text-4xl font-bold text-red-600 dark:text-red-400">
+            <span class="lang-en">Cultural Significance</span>
+            <span class="lang-vi hidden">Ý Nghĩa Văn Hóa</span>
+        </h2>
+        <p class="text-lg leading-relaxed text-gray-700 dark:text-gray-300">
+            <span class="lang-en">Festivals are the vibrant soul of Vietnamese culture, serving as a special time to honor ancestors, pray for good harvests, and bring families and communities closer together. Amazingly, Vietnam hosts around 8,000 festivals every year. While most of these are small, local village celebrations, several are massive national events. The most important is Tết (Lunar New Year), a beautiful time for family reunions, welcoming spring, and exchanging lucky money. Another favorite is the Mid-Autumn Festival, where children light up the streets with colorful lanterns and families share sweet mooncakes. Other famous celebrations include the Hùng Kings Commemoration Day, which honors the legendary founders of the nation, and the magical Hoi An Lantern Festival, where the ancient town glows with thousands of traditional silk lanterns every month.</span>
+            <span class="lang-vi hidden">Lễ hội là linh hồn của văn hóa Việt Nam, là dịp đặc biệt để người dân tưởng nhớ tổ tiên, cầu mong mùa màng bội thu và thắt chặt tình cảm gia đình, làng xóm. Đáng kinh ngạc là mỗi năm Việt Nam có đến khoảng 8.000 lễ hội. Dù phần lớn là các lễ hội nhỏ tại các làng quê, vẫn có những sự kiện lớn mang tầm quốc gia. Quan trọng nhất là Tết Nguyên Đán, thời điểm tuyệt vời để gia đình đoàn tụ, đón mùa xuân và trao nhau những phong bao lì xì may mắn. Một dịp lễ được yêu thích khác là Tết Trung Thu, nơi trẻ em rước đèn lồng rực rỡ và gia đình cùng nhau thưởng thức bánh trung thu. Những lễ hội nổi tiếng khác phải kể đến Giỗ Tổ Hùng Vương để tưởng nhớ các vị vua có công lập quốc, và Lễ hội Hoa đăng Hội An tuyệt đẹp, nơi phố cổ lung linh dưới ánh sáng của hàng ngàn chiếc đèn lồng truyền thống mỗi tháng.</span>
+        </p>
+        <div class="grid grid-cols-2 gap-4 pt-4">
+            <div class="p-4 bg-red-50 dark:bg-gray-700 rounded-lg border-l-4 border-red-500">
+                <div class="text-3xl font-black text-red-600 dark:text-red-400">70.000+</div>
+                <div class="text-sm font-medium mt-1"><span class="lang-en">Daily Tourists</span><span class="lang-vi hidden">Du Khách Mỗi Ngày</span></div>
+            </div>
+            <div class="p-4 bg-yellow-50 dark:bg-gray-700 rounded-lg border-l-4 border-yellow-500">
+                <div class="text-3xl font-black text-yellow-600 dark:text-yellow-400">21.12M</div>
+                <div class="text-sm font-medium mt-1"><span class="lang-en">Annual Attendees</span><span class="lang-vi hidden">Người Tham Dự Hàng Năm</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+        <footer class="text-center py-6 border-t border-gray-200 dark:border-gray-700 text-gray-500">
+            <p><i class="fas fa-users mr-2"></i> <span class="lang-en">Currently</span><span class="lang-vi hidden">Hiện có</span> <b class="text-gray-900 dark:text-white">4,892</b> <span class="lang-en">tourists exploring FestiMap VN</span><span class="lang-vi hidden">du khách đang khám phá FestiMap VN</span></p>
+        </footer>
+    </div>
+
+    <div id="mapView" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-6 h-[85vh]">
+            
+            <div class="md:col-span-5 bg-white dark:bg-gray-800 rounded-2xl shadow-lg flex flex-col overflow-hidden h-full">
+                <div class="flex overflow-x-auto border-b border-gray-200 dark:border-gray-700">
+                    <button id="btnFestivals" onclick="switchTab('Festivals')" class="flex-1 py-4 px-2 text-center font-bold border-b-2 border-blue-600 text-blue-600 dark:text-blue-400 transition-colors whitespace-nowrap">
+                        <i class="fas fa-map mr-2"></i><span class="lang-en">Guidebook</span><span class="lang-vi hidden">Cẩm Nang</span>
+                    </button>
+                    <button id="btnUtilities" onclick="switchTab('Utilities')" class="flex-1 py-4 px-2 text-center font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors whitespace-nowrap">
+                        <i class="fas fa-concierge-bell mr-2"></i><span class="lang-en">Utilities</span><span class="lang-vi hidden">Tiện Ích</span>
+                    </button>
+                    <button id="btnBookings" onclick="switchTab('Bookings')" class="flex-1 py-4 px-2 text-center font-bold border-b-2 border-transparent text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors whitespace-nowrap">
+                        <i class="fas fa-ticket-alt mr-2"></i><span class="lang-en">Bookings</span><span class="lang-vi hidden">Đặt Chỗ</span>
+                    </button>
+                </div>
+
+                <div class="p-6 overflow-y-auto flex-1">
+                    
+                    <div id="tabFestivals" class="block space-y-6">
+                        <div class="rounded-xl overflow-hidden relative">
+                            <img id="festDetailImg" src="" class="w-full h-48 object-cover">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-4">
+                                <div>
+                                    <h2 id="festDetailTitleEn" class="lang-en text-2xl font-bold text-white"></h2>
+                                    <h2 id="festDetailTitleVi" class="lang-vi hidden text-2xl font-bold text-white"></h2>
+                                    <p class="text-yellow-400 text-sm mt-1"><i class="fas fa-star mr-1"></i> Featured Destination</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-2"><i class="fas fa-tshirt text-indigo-500 mr-2"></i> Recommended Attire</h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 p-3 rounded-lg">Long pans, collared shirts, or dresses that cover the knees. Choose comfortable shoes for walking.</p>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg mb-2"><i class="fas fa-clipboard-list text-purple-500 mr-2"></i> Core Activities</h3>
+                            <ul class="text-sm text-gray-600 dark:text-gray-400 list-disc pl-5 space-y-1">
+                                <li>The Bathing Ritual </li>
+                                <li>Thoai Ngoc Hau Procession</li>
+                                <li>Tuc Yet and Chanh Te Rituals</li>
+                            </ul>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-green-50 dark:bg-green-900/20 p-3 rounded-lg border border-green-200 dark:border-green-800">
+                                <h4 class="font-bold text-green-700 dark:text-green-400 mb-1"><i class="fas fa-check-circle mr-1"></i> Dos</h4>
+                                <ul class="text-xs text-green-600 dark:text-green-500 list-disc pl-4 space-y-1">
+                                    <li>Buy offerings like roasted pig, fruits, or incense beforehand to get better prices.</li>
+                                    <li>Keep a close eye on your wallet and personal belongings, as the festival is highly crowded.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-red-50 dark:bg-red-900/20 p-3 rounded-lg border border-red-200 dark:border-red-800">
+                                <h4 class="font-bold text-red-700 dark:text-red-400 mb-1"><i class="fas fa-times-circle mr-1"></i> Don'ts</h4>
+                                <ul class="text-xs text-red-600 dark:text-red-500 list-disc pl-4 space-y-1">
+                                    <li>Do not engage with fortune tellers, scammers, or illegal gambling games around the temple area.</li>
+                                    <li>Never accept "free" lucky charms, incense, or birds for release from street vendors, as they will demand exorbitant prices later.</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button id="btnGetDirections" onclick="MapsTo(currentFestData.q)" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg shadow-md transition-colors">
+                            <i class="fas fa-directions mr-2"></i> Get Directions to Festival
+                        </button>
+                    </div>
+
+                    <div id="tabUtilities" class="hidden space-y-4">
+                        <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg"><i class="fas fa-utensils text-orange-500 w-6"></i> Pho Co Restaurant</h3>
+                                    <div class="flex gap-2 text-xs mt-2 font-medium">
+                                        <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Food</span>
+                                        <span class="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-1 rounded"><i class="fas fa-walking mr-1"></i>0.2km</span>
+                                        <span class="bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 px-2 py-1 rounded">$$</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button onclick="orderItem('Pho Co Meal', '$15.00')" class="flex-1 bg-gray-900 dark:bg-gray-600 text-white px-3 py-2 rounded font-semibold hover:bg-black dark:hover:bg-gray-500 text-sm transition-colors">Order Now</button>
+                                <button onclick="MapsTo('Pho Co Restaurant')" class="flex-1 border border-gray-300 dark:border-gray-600 px-3 py-2 rounded font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 text-sm transition-colors"><i class="fas fa-location-arrow mr-1"></i> Navigate</button>
+                            </div>
+                        </div>
+
+                        <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg"><i class="fas fa-bed text-indigo-500 w-6"></i> Heritage Homestay</h3>
+                                    <div class="flex gap-2 text-xs mt-2 font-medium">
+                                        <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Lodging</span>
+                                        <span class="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-1 rounded"><i class="fas fa-walking mr-1"></i>0.5km</span>
+                                        <span class="bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 px-2 py-1 rounded">$$$</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button onclick="orderItem('Homestay Night', '$45.00')" class="flex-1 bg-gray-900 dark:bg-gray-600 text-white px-3 py-2 rounded font-semibold hover:bg-black dark:hover:bg-gray-500 text-sm transition-colors">Book Room</button>
+                                <button onclick="MapsTo('Heritage Homestay')" class="flex-1 border border-gray-300 dark:border-gray-600 px-3 py-2 rounded font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 text-sm transition-colors"><i class="fas fa-location-arrow mr-1"></i> Navigate</button>
+                            </div>
+                        </div>
+
+                        <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg"><i class="fas fa-camera text-pink-500 w-6"></i> Ancient Bridge View</h3>
+                                    <div class="flex gap-2 text-xs mt-2 font-medium">
+                                        <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Check-in</span>
+                                        <span class="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-1 rounded"><i class="fas fa-walking mr-1"></i>0.1km</span>
+                                        <span class="bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 px-2 py-1 rounded">Free</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button onclick="MapsTo('Japanese Bridge Vietnam')" class="w-full bg-blue-600 text-white px-3 py-2 rounded font-semibold hover:bg-blue-700 text-sm transition-colors"><i class="fas fa-location-arrow mr-1"></i> Navigate to Spot</button>
+                            </div>
+                        </div>
+
+                        <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <h3 class="font-bold text-lg"><i class="fas fa-shopping-bag text-purple-500 w-6"></i> Silk & Craft Shop</h3>
+                                    <div class="flex gap-2 text-xs mt-2 font-medium">
+                                        <span class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">Shopping</span>
+                                        <span class="bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 px-2 py-1 rounded"><i class="fas fa-walking mr-1"></i>0.3km</span>
+                                        <span class="bg-green-50 dark:bg-green-900/30 text-green-600 dark:text-green-400 px-2 py-1 rounded">$$</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex gap-2">
+                                <button onclick="orderItem('Silk Scarf', '$12.00')" class="flex-1 bg-gray-900 dark:bg-gray-600 text-white px-3 py-2 rounded font-semibold hover:bg-black dark:hover:bg-gray-500 text-sm transition-colors">Buy Item</button>
+                                <button onclick="MapsTo('Silk Shop Vietnam')" class="flex-1 border border-gray-300 dark:border-gray-600 px-3 py-2 rounded font-semibold hover:bg-gray-50 dark:hover:bg-gray-700 text-sm transition-colors"><i class="fas fa-location-arrow mr-1"></i> Navigate</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="tabBookings" class="hidden">
+                        <div id="emptyBookings" class="flex flex-col items-center justify-center text-gray-400 h-64 text-center">
+                            <i class="fas fa-box-open text-6xl mb-4 opacity-50"></i>
+                            <p class="font-medium text-lg">No active orders or bookings.</p>
+                            <p class="text-sm">Explore utilities to start ordering!</p>
+                        </div>
+                        <div id="bookingList" class="space-y-3"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:col-span-7 bg-gray-200 dark:bg-gray-700 rounded-2xl shadow-lg relative overflow-hidden h-full min-h-[400px]">
+                <iframe id="mapIframe" class="w-full h-full border-0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <button onclick="MapsTo(currentFestData.q)" class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-bold py-3 px-6 rounded-full shadow-2xl hover:scale-105 transition-transform border border-gray-100 dark:border-gray-600 flex items-center gap-2">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/Google_Maps_icon.svg" class="w-6 h-6"> Open in Maps App
+                </button>
+            </div>
+
+        </div>
+    </div>
+</main>
+
+<button onclick="toggleChatbot()" class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition-transform z-50">
+    <i class="fas fa-comment-dots"></i>
+</button>
+
+<div id="chatbotUI" class="hidden fixed bottom-28 right-6 w-80 sm:w-96 bg-white dark:bg-gray-800 rounded-2xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden z-50 flex flex-col h-[500px]">
+    <div class="bg-gradient-to-r from-blue-600 to-purple-600 p-4 text-white flex justify-between items-center">
+        <div class="flex items-center gap-2 font-bold"><i class="fas fa-robot text-xl"></i> FestiBot (Gemini)</div>
+        <button onclick="toggleChatbot()" class="text-white hover:text-gray-200"><i class="fas fa-times text-xl"></i></button>
+    </div>
+    <div id="chatHistory" class="flex-1 p-4 overflow-y-auto bg-gray-50 dark:bg-gray-900 text-sm flex flex-col gap-3">
+        <div class="flex items-start gap-2">
+            <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center flex-shrink-0"><i class="fas fa-robot text-xs"></i></div>
+            <div class="bg-white dark:bg-gray-800 p-3 rounded-xl rounded-tl-none shadow-sm border border-gray-100 dark:border-gray-700 text-gray-800 dark:text-gray-200">Xin chào! I am FestiBot powered by Gemini API. Ask me anything about Vietnam's festivals, culture, or local spots!</div>
+        </div>
+    </div>
+    <div class="p-3 bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 flex gap-2">
+        <input type="text" id="chatInput" placeholder="Type a message..." class="flex-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-white rounded-full px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" onkeypress="event.key === 'Enter' && sendChatMessage()">
+        <button onclick="sendChatMessage()" class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors"><i class="fas fa-paper-plane"></i></button>
+    </div>
+</div>
+
+<script>
+const GEMINI_API_KEY = "...";
+const festivals = [
+  {
+    id: 1,
+    nameEn: "Vietnam Independence Day",
+    nameVi: "Lễ Quốc Khánh",
+    img: "./PTIT/Vietnam Independence Day/slider.png",
+    q: "Hoan Kiem Lake, Ha Noi"
+  },
+  {
+    id: 2,
+    nameEn: "Ba Chua Xu Temple Festival",
+    nameVi: "Lễ hội Miếu Bà Chúa Xứ",
+    img: "./PTIT/Ba Chua Xu Temple Festival/slider.png",
+    q: "Ba Chua Xu Temple, An Giang"
+  },
+  {
+    id: 3,
+    nameEn: "Buddha's Birthday",
+    nameVi: "Lễ Phật Đản",
+    img: "./PTIT/Buddha's Birthday/slider.png",
+    q: "Bai Dinh Pagoda, Ninh Binh"
+  },
+  {
+    id: 4,
+    nameEn: "Hoi An Lantern Festival",
+    nameVi: "Lễ hội Đèn lồng Hội An",
+    img: "./PTIT/Hoi An Lantern Festival/slider.png",
+    q: "Hoi An Ancient Town, Quang Nam"
+  },
+  {
+    id: 5,
+    nameEn: "Hue Festival",
+    nameVi: "Festival Huế",
+    img: "./PTIT/Hue Festival/slider.png",
+    q: "Hue Imperial Citadel, Thua Thien Hue"
+  },
+  {
+    id: 6,
+    nameEn: "Hung King Temple Festival",
+    nameVi: "Giỗ Tổ Hùng Vương",
+    img: "./PTIT/Hung King Temple Festival/slider.png",
+    q: "Hung King Temple, Phu Tho"
+  },
+  {
+    id: 7,
+    nameEn: "Kate Festival",
+    nameVi: "Lễ hội Katê",
+    img: "./PTIT/Kate Festival/slider.png",
+    q: "Po Klong Garai Cham Towers, Ninh Thuan"
+  },
+  {
+    id: 8,
+    nameEn: "Khau Vai Love Market Festival",
+    nameVi: "Chợ tình Khâu Vai",
+    img: "./PTIT/Khau Vai Love Market Festival/slider.png",
+    q: "Khau Vai Love Market, Meo Vac, Ha Giang"
+  },
+  {
+    id: 9,
+    nameEn: "Lim Festival",
+    nameVi: "Hội Lim",
+    img: "./PTIT/Lim Festival/slider.png",
+    q: "Lim Hill, Tien Du, Bac Ninh"
+  },
+  {
+    id: 10,
+    nameEn: "Mid-Autumn Festival",
+    nameVi: "Tết Trung Thu",
+    img: "./PTIT/Mid-Autumn Festival/slider.png",
+    q: "Hang Ma Street, Hoan Kiem, Ha Noi"
+  },
+  {
+    id: 11,
+    nameEn: "Perfume Pagoda Festival",
+    nameVi: "Lễ hội Chùa Hương",
+    img: "./PTIT/Perfume Pagoda Festival/slider.png",
+    q: "Perfume Pagoda, Huong Son, My Duc, Ha Noi"
+  },
+  {
+    id: 12,
+    nameEn: "Ponagar Temple Festival",
+    nameVi: "Lễ hội Tháp Bà Po Nagar",
+    img: "./PTIT/Ponagar Temple Festival/slider.png",
+    q: "Po Nagar Cham Towers, Nha Trang, Khanh Hoa"
+  },
+  {
+    id: 13,
+    nameEn: "Reunification Day",
+    nameVi: "Ngày Giải phóng miền Nam",
+    img: "./PTIT/Reunification Day/slider.png",
+    q: "Independence Palace, District 1, Ho Chi Minh City"
+  },
+  {
+    id: 14,
+    nameEn: "Tet Festival",
+    nameVi: "Tết Nguyên Đán",
+    img: "./PTIT/Tet Festival/slider.png",
+    q: "Vietnam"
+  },
+  {
+    id: 15,
+    nameEn: "Vietnam Ghost Festival",
+    nameVi: "Lễ Vu Lan / Cúng Cô Hồn",
+    img: "./PTIT/Vietnam Ghost Festival/slider.png",
+    q: "Vinh Nghiem Pagoda, District 3, Ho Chi Minh City"
+  }
+];
+
+let currentFestData = festivals[0];
+let slideIndex = 0;
+
+const toggleTheme = () => document.documentElement.classList.toggle('dark') ? document.getElementById('themeIcon').className = 'fas fa-sun text-xl text-yellow-500' : document.getElementById('themeIcon').className = 'fas fa-moon text-xl text-gray-600';
+
+const toggleLang = () => document.querySelectorAll('.lang-vi, .lang-en').forEach(el => el.classList.toggle('hidden'));
+
+const updateMap = q => document.getElementById('mapIframe').src = `https://maps.google.com/maps?q=${encodeURIComponent(q)}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
+
+const MapsTo = q => window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(q)}`, '_blank');
+
+const appRouter = (viewName, data = null) => (
+    document.getElementById('homeView').classList.toggle('hidden', viewName !== 'home'),
+    document.getElementById('mapView').classList.toggle('hidden', viewName !== 'map'),
+    window.scrollTo(0,0),
+    data && (
+        currentFestData = data,
+        document.getElementById('festDetailImg').src = data.img,
+        document.getElementById('festDetailTitleEn').innerText = data.nameEn,
+        document.getElementById('festDetailTitleVi').innerText = data.nameVi,
+        updateMap(data.q),
+        switchTab('Festivals')
+    )
+);
+
+const handleSearchInput = e => (
+    document.getElementById('searchDropdown').innerHTML = '',
+    e.target.value.trim().length > 0 ? (
+        document.getElementById('searchDropdown').classList.remove('hidden'),
+        festivals.filter(f => f.nameEn.toLowerCase().includes(e.target.value.toLowerCase()) || f.nameVi.toLowerCase().includes(e.target.value.toLowerCase())).forEach(f => {
+            const div = document.createElement('div');
+            div.className = 'p-3 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer flex items-center gap-3 border-b border-gray-100 dark:border-gray-700 last:border-0';
+            div.innerHTML = `<img src="${f.img}" class="w-10 h-10 rounded-full object-cover"><span class="font-medium">${f.nameEn}</span>`;
+            div.onclick = () => (document.getElementById('searchInput').value = '', document.getElementById('searchDropdown').classList.add('hidden'), appRouter('map', f));
+            document.getElementById('searchDropdown').appendChild(div);
+        })
+    ) : document.getElementById('searchDropdown').classList.add('hidden')
+);
+
+const renderCarousel = () => {
+    const track = document.getElementById('carouselTrack');
+    track.innerHTML = '';
+    [0, 1, 2].forEach(i => {
+        const f = festivals[(slideIndex + i) % festivals.length];
+        const div = document.createElement('div');
+        div.className = 'w-full sm:w-1/3 flex-shrink-0';
+        div.innerHTML = `<div class="relative rounded-2xl overflow-hidden h-72 group cursor-pointer shadow-md" onclick="appRouter('map', festivals[${(slideIndex + i) % festivals.length}])"><img src="${f.img}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"/><div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6"><h3 class="text-white font-bold text-xl drop-shadow-md lang-en">${f.nameEn}</h3><h3 class="text-white font-bold text-xl drop-shadow-md lang-vi hidden">${f.nameVi}</h3><p class="text-blue-300 text-sm mt-2 flex items-center"><i class="fas fa-location-dot mr-1"></i> ${f.q}</p></div></div>`;
+        track.appendChild(div);
+    });
+};
+
+const moveCarousel = dir => (slideIndex = (slideIndex + dir + festivals.length) % festivals.length, renderCarousel());
+
+const switchTab = tab => ['Festivals', 'Utilities', 'Bookings'].forEach(t => (
+    document.getElementById('tab' + t).classList.toggle('hidden', t !== tab),
+    document.getElementById('btn' + t).classList.toggle('border-blue-600', t === tab),
+    document.getElementById('btn' + t).classList.toggle('text-blue-600', t === tab),
+    document.getElementById('btn' + t).classList.toggle('dark:text-blue-400', t === tab),
+    document.getElementById('btn' + t).classList.toggle('border-transparent', t !== tab),
+    document.getElementById('btn' + t).classList.toggle('text-gray-500', t !== tab)
+));
+
+const orderItem = (name, price) => (
+    document.getElementById('emptyBookings').classList.add('hidden'),
+    document.getElementById('bookingList').insertAdjacentHTML('afterbegin', `<div class="p-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-sm flex justify-between items-center"><div class="flex items-center gap-3"><div class="w-10 h-10 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 flex items-center justify-center"><i class="fas fa-check"></i></div><div><div class="font-bold text-gray-800 dark:text-white">${name}</div><div class="text-xs text-gray-500">Ref: ${Math.floor(Math.random()*100000)}</div></div></div><div class="flex flex-col items-end gap-1"><span class="font-black text-green-600 dark:text-green-400">${price}</span><span class="bg-yellow-100 dark:bg-yellow-900/40 text-yellow-700 dark:text-yellow-400 text-xs px-2 py-0.5 rounded-full font-bold">Processing</span></div></div>`),
+    alert(`Successfully processed: ${name}!`)
+);
+
+const toggleChatbot = () => document.getElementById('chatbotUI').classList.toggle('hidden');
+
+const appendMsg = (role, text) => {
+    const h = document.getElementById('chatHistory');
+    const isUser = role === 'user';
+    h.insertAdjacentHTML('beforeend', `<div class="flex items-start gap-2 ${isUser ? 'flex-row-reverse' : ''}"><div class="w-8 h-8 rounded-full ${isUser ? 'bg-purple-600' : 'bg-blue-600'} text-white flex items-center justify-center flex-shrink-0"><i class="fas ${isUser ? 'fa-user' : 'fa-robot'} text-xs"></i></div><div class="p-3 rounded-xl shadow-sm text-sm border ${isUser ? 'bg-purple-600 text-white rounded-tr-none border-transparent' : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 rounded-tl-none border-gray-100 dark:border-gray-700'}">${text}</div></div>`);
+    h.scrollTop = h.scrollHeight;
+};
+
+const sendChatMessage = async () => {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if (!text) return;
+    input.value = '';
+    appendMsg('user', text);
+    try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({contents: [{parts: [{text}]}]})
+        });
+        const data = await res.json();
+        appendMsg('bot', data.candidates[0].content.parts[0].text);
+    } catch (e) {
+        appendMsg('bot', 'Sorry, I encountered a network error connecting to Gemini.');
+    }
+};
+
+window.onload = () => (
+    document.getElementById('searchInput').addEventListener('input', handleSearchInput),
+    renderCarousel()
+);
+</script>
+</body>
+</html>
